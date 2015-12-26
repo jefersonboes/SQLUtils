@@ -1,4 +1,4 @@
 # SQLUtils
 SQL Utils
 
-Look here https://jefersonboes.github.io/SQLUtils/
+See here https://jefersonboes.github.io/SQLUtils/
