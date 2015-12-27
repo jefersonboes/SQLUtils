@@ -101,8 +101,6 @@ function extract_end_line(text) {
 		i--;
 	}
 
-	console.log(text);
-
 	return text.substr(0, i);
 }
 
