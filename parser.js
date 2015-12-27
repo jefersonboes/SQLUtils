@@ -113,7 +113,7 @@ function extract_sql(text) {
 			result += '\x0a';
 
 		var part = extract_begin_line(split_text[i]);
-		result += extract_end_line(part);		
+		result += extract_end_line(part);
 	}
 
 	return result;
