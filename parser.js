@@ -56,7 +56,7 @@ function concat_sql(text) {
 		var ns = "'" + s + "'";
 
 		if (i < split_text.length - 1)
-			ns = ns + "#13+";
+			ns = ns + "#13 +";
 
 		new_text += ns;
 		new_text += '\x0a';
