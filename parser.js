@@ -24,15 +24,7 @@ function quote_str(text) {
 
 	while (i < text.length) {		
 		if (text[i] == "'") {
-			var qs = "";
-			while (text[i] == "'") {
-				qs += text[i];
-				i++;
-			}
-
-			result += "'" + qs;
-
-			continue;
+			result += "'" + text[i];
 		} else 
 			result += text[i];
 
