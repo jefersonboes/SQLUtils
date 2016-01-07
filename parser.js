@@ -30,7 +30,7 @@ function quote_str(text) {
 				i++;
 			}
 
-			result += "'" + qs + "'";
+			result += "'" + qs;
 
 			continue;
 		} else 
