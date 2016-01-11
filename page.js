@@ -24,12 +24,15 @@ window.onload = function() {
 	var result = document.getElementById("result");
 		
 	butQuote.onclick = function(e) {				    
-	    result.value = concat_sql(data.value);
+	    result.value = quote_sql(data.value);
 	    e.preventDefault();
 	}
 
 	butExtract.onclick = function(e) {				    
-	    result.value = extract_sql(data.value);
+	    //result.value = extract_sql(data.value);
+
+		p = new Parse(data.value);
+
 	    e.preventDefault();
 	}
 }

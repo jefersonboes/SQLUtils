@@ -34,7 +34,7 @@ function quote_str(text) {
 	return result;
 }
 
-function concat_sql(text) {
+function quote_sql(text) {
 
 	var split_text = text.split("\x0a");
 
@@ -96,7 +96,7 @@ function extract_end_line(text) {
 	return text.substr(0, i);
 }
 
-function extract_sql(text) {
+/*function extract_sql(text) {
 	var split_text = text.split("\x0a");
 	var result = "";
 
@@ -109,4 +109,87 @@ function extract_sql(text) {
 	}
 
 	return result;
+}
+*/
+
+function Parse(text) {
+
+	var tokens = null;
+	var token_index = 0;
+
+	var tokenize = function(text) {
+		var token = "";
+		tokens = new Array();	
+
+		for (var i = 0; i < text.length; i++) {
+			if (text[i] == "'") {
+				if (token.length > 0) {
+					tokens.push(token);
+					token = "";
+				}
+
+				tokens.push("'");				
+			} else {
+				token += text[i];
+			}
+		}
+
+		if (token.length > 0)
+			tokens.push(token);
+	}
+
+	var next_token = function() {
+		if (token_index < tokens.length) {
+			var token = tokens[token_index];
+			token_index++;
+			return token;
+		} else
+			return null;
+	}
+
+	var has_token = function() {
+		return token_index < tokens.length;
+	}
+
+	var cur_token = function() {
+		if (has_token())
+			return tokens[token_index];
+		else
+			return null;
+	}
+
+	/*
+
+	''
+
+
+	*/
+
+
+	var extract_sql = function(text) {
+		tokenize(text);
+
+		console.log("tokens:" + tokens);
+
+		var quote_open = false;
+		var quote_count = 0;
+
+		while (has_token()) {
+			if (cur_token() == "'") {
+				
+				while (cur_token() == "'") {
+					console.log("(");
+					next_token();
+				}
+
+				console.log("A" + cur_token());
+
+			}
+			
+
+			next_token();
+		}
+	}
+	
+	extract_sql(text);
 }
