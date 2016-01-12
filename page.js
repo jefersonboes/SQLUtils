@@ -1,5 +1,5 @@
 /* SQL Utils - SQL Utils
- * Copyright (C) 2015 Jeferson Boes
+ * Copyright (C) 2015, 2016 Jeferson Boes
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,10 +28,10 @@ window.onload = function() {
 	    e.preventDefault();
 	}
 
-	butExtract.onclick = function(e) {				    
-	    //result.value = extract_sql(data.value);
+	butExtract.onclick = function(e) {
+		parser = new Parser(data.value);		
 
-		p = new Parse(data.value);
+		result.value = parser.get_sql();
 
 	    e.preventDefault();
 	}

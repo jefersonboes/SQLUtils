@@ -1,5 +1,5 @@
 /* SQL Utils - SQL Utils
- * Copyright (C) 2015 Jeferson Boes
+ * Copyright (C) 2015, 2016 Jeferson Boes
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -96,26 +96,11 @@ function extract_end_line(text) {
 	return text.substr(0, i);
 }
 
-/*function extract_sql(text) {
-	var split_text = text.split("\x0a");
-	var result = "";
-
-	for (var i = 0;  i < split_text.length; i++) {
-		if (result.length > 0)
-			result += '\x0a';
-
-		var part = extract_begin_line(split_text[i]);
-		result += extract_end_line(part);
-	}
-
-	return result;
-}
-*/
-
-function Parse(text) {
+function Parser(text) {
 
 	var tokens = null;
 	var token_index = 0;
+	var sql = "";
 
 	var tokenize = function(text) {
 		var token = "";
@@ -129,7 +114,7 @@ function Parse(text) {
 				}
 
 				tokens.push("'");				
-			} else {
+			} else if (text[i] != "\x0a" && text[i] != "\x0d") {
 				token += text[i];
 			}
 		}
@@ -158,14 +143,6 @@ function Parse(text) {
 			return null;
 	}
 
-	/*
-
-	''
-
-
-	*/
-
-
 	var extract_sql = function(text) {
 		tokenize(text);
 
@@ -176,20 +153,40 @@ function Parse(text) {
 
 		while (has_token()) {
 			if (cur_token() == "'") {
-				
-				while (cur_token() == "'") {
-					console.log("(");
+				next_token();
+
+				if (cur_token() == "'") {
+					console.log("Q");
+					sql += "'";
 					next_token();
+					continue;
+				} else {
+					quote_open = true;
+
+					console.log("Al" + cur_token());
+
+					if (cur_token() != null)
+						sql += cur_token();
+
+					next_token();
+
+					if (cur_token != "'")
+						quote_open = false;
+
+					if (!quote_open)
+						sql += "__";
+					
 				}
 
-				console.log("A" + cur_token());
-
 			}
-			
 
 			next_token();
 		}
 	}
 	
+	this.get_sql = function() {
+		return sql;
+	}
+
 	extract_sql(text);
 }
