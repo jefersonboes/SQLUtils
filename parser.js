@@ -114,7 +114,7 @@ function Parser(text) {
 				}
 
 				tokens.push("'");				
-			} else if (text[i] != "\x0a" && text[i] != "\x0d") {
+			} else if (text[i]) {
 				token += text[i];
 			}
 		}
@@ -155,8 +155,58 @@ function Parser(text) {
 
 		console.log("tokens:" + tokens);
 
+		var state = 0;
+
 		while (has_token()) {
-			if (cur_token() == "'") {
+			switch(state) {
+				case 0:
+					if (cur_token() == "'") {
+						state = 1;
+						next_token();
+					} else {
+						state = 2;
+					}
+					break;
+				case 1:
+					if (cur_token() == "'") {
+						if (second_token() != "'") {
+							state = 3;
+							next_token();
+						} else {
+							//next_token();
+
+							while (cur_token() == "'") {
+								sql += "§";
+
+								
+
+								next_token();
+							}
+
+
+						}
+					} else {
+						state = 2;
+					}
+
+					break;
+				case 2:
+					sql += cur_token();
+
+					next_token();
+					state = 1;
+
+					break;
+				case 3:
+					sql += "#";
+
+					state = 0;
+					next_token();
+					break;
+			}
+
+
+			/*if (cur_token() == "'") {
 				next_token();
 
 				if (cur_token() == "'") {
@@ -182,7 +232,7 @@ function Parser(text) {
 
 			}
 
-			next_token();
+			next_token();*/
 		}
 	}
 	
