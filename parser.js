@@ -153,8 +153,6 @@ function Parser(text) {
 	var extract_sql = function(text) {
 		tokenize(text);
 
-		console.log("tokens:" + tokens);
-
 		var state = 0;
 
 		while (has_token()) {
@@ -173,16 +171,23 @@ function Parser(text) {
 							state = 3;
 							next_token();
 						} else {
-							//next_token();
+							var count_quotes = 0;
 
-							while (cur_token() == "'") {
-								sql += "§";
-
-								
+							while (cur_token() == "'") {							
+								count_quotes++;
 
 								next_token();
 							}
 
+							sql += "'".repeat(count_quotes / 2);
+
+							//closed
+							if (count_quotes % 2 == 1) {
+								state = 3;
+								next_token();
+							} else {
+								state = 2;
+							}
 
 						}
 					} else {
@@ -198,41 +203,13 @@ function Parser(text) {
 
 					break;
 				case 3:
-					sql += "#";
+					sql += "\n";
 
 					state = 0;
 					next_token();
 					break;
 			}
-
-
-			/*if (cur_token() == "'") {
-				next_token();
-
-				if (cur_token() == "'") {
-					console.log("Q");
-					sql += "'";
-
-					if (second_token() != "'")
-						sql += "\n";
-
-					next_token();
-					continue;
-				} else {
-					console.log("Al" + cur_token());
-
-					if (cur_token() != null)
-						sql += cur_token();
-
-					next_token();
-
-					if (second_token() != "'")
-						sql += "\n";
-				}
-
-			}
-
-			next_token();*/
+			
 		}
 	}
 	
