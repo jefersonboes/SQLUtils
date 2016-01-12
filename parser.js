@@ -143,13 +143,17 @@ function Parser(text) {
 			return null;
 	}
 
+	var second_token = function() {
+		if (token_index + 1 < tokens.length)
+			return tokens[token_index + 1];
+		else
+			return null;
+	}
+
 	var extract_sql = function(text) {
 		tokenize(text);
 
 		console.log("tokens:" + tokens);
-
-		var quote_open = false;
-		var quote_count = 0;
 
 		while (has_token()) {
 			if (cur_token() == "'") {
@@ -158,11 +162,13 @@ function Parser(text) {
 				if (cur_token() == "'") {
 					console.log("Q");
 					sql += "'";
+
+					if (second_token() != "'")
+						sql += "\n";
+
 					next_token();
 					continue;
 				} else {
-					quote_open = true;
-
 					console.log("Al" + cur_token());
 
 					if (cur_token() != null)
@@ -170,12 +176,8 @@ function Parser(text) {
 
 					next_token();
 
-					if (cur_token != "'")
-						quote_open = false;
-
-					if (!quote_open)
-						sql += "__";
-					
+					if (second_token() != "'")
+						sql += "\n";
 				}
 
 			}
