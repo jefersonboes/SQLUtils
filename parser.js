@@ -160,10 +160,8 @@ function Parser(text) {
 				case 0:
 					if (cur_token() == "'") {
 						state = 1;
-						next_token();
-					} else {
-						state = 2;
 					}
+					next_token();
 					break;
 				case 1:
 					if (cur_token() == "'") {
