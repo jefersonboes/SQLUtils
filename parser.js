@@ -209,7 +209,7 @@ function MendANSIEncoding(text) {
 
         while (has_token()) {
             if (get_token() == 'Ã') {
-            	const tokens = [['Ã©', 'é'], ['Ãª', 'ê'], ['Ãº', 'Ú'], ['Ã§', 'ç'], ['Ã£', 'ã']];
+            	const tokens = [['Ã©', 'é'], ['Ã‰', 'É'], ['Ãª', 'ê'], ['Ãº', 'Ú'], ['Ã§', 'ç'], ['Ã£', 'ã'], ['Ã­', 'í']];
 
             	for (var i = 0; i < tokens.length; i++) {
             		if (get_double_token() == tokens[i][0]) {
