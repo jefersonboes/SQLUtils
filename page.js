@@ -21,6 +21,7 @@ window.onload = function() {
 	var data = document.getElementById("data");
 	var butQuote = document.getElementById("butQuote");
 	var butExtract = document.getElementById("butExtract");
+	var butMend = document.getElementById("butMend");
 	var result = document.getElementById("result");
 		
 	butQuote.onclick = function(e) {				    
@@ -34,5 +35,13 @@ window.onload = function() {
 		result.value = parser.get_sql();
 
 	    e.preventDefault();
+	}
+
+	butMend.onclick = function(e) {
+		mend = new MendANSIEncoding(data.value);
+
+		result.value = mend.get_str();
+
+		e.preventDefault();
 	}
 }

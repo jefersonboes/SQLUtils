@@ -61,41 +61,6 @@ function trim(str) {
 	return str.replace(/^\s+|\s+$/g,"");
 }
 
-function extract_begin_line(text) {
-	var i = 0;
-	var line = "";
-
-	while (i < text.length) {		
-		if (text[i] == "'") {
-			
-			while (text[i] == "'") {
-				i++;
-			}
-
-			while (i < text.length) {
-				line += text[i];
-				i++;
-			}
-		} else
-			i++;
-	}
-
-	return line;
-}
-
-function extract_end_line(text) {
-	var i = text.length;
-
-	while (i > 0) {
-		if (text[i] == "'")
-			break;
-
-		i--;
-	}
-
-	return text.substr(0, i);
-}
-
 function Parser(text) {
 
 	var tokens = null;
@@ -216,4 +181,54 @@ function Parser(text) {
 	}
 
 	extract_sql(text);
+}
+
+function MendANSIEncoding(text) {
+	var index = 0;
+	var str = text;
+	var new_str = '';
+
+	var next_token = function() {		
+        index += 1;
+    }
+
+    var get_token = function() {
+        return str[index];
+    }
+
+    var get_double_token = function() {
+        return str[index] + str[index + 1];
+	}
+
+    var has_token = function() {
+        return index < str.length;
+    }
+        
+    var mend = function() {
+        index = 0;        
+
+        while (has_token()) {
+            if (get_token() == 'Ã') {
+                if (get_double_token() == 'Ã©') {
+                    new_str += 'é';
+                    next_token();
+                }
+
+                if (get_double_token() == 'Ãª') {
+                    new_str += 'ê';
+                    next_token();
+                }
+            } else {
+                new_str += get_token();
+            }
+                    
+            next_token();
+        }
+    }
+
+    this.get_str = function() {
+    	return new_str;
+    }
+
+    mend();
 }
