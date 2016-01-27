@@ -209,15 +209,15 @@ function MendANSIEncoding(text) {
 
         while (has_token()) {
             if (get_token() == 'Ã') {
-                if (get_double_token() == 'Ã©') {
-                    new_str += 'é';
-                    next_token();
-                }
+            	const tokens = [['Ã©', 'é'], ['Ãª', 'ê'], ['Ãº', 'Ú'], ['Ã§', 'ç'], ['Ã£', 'ã']];
 
-                if (get_double_token() == 'Ãª') {
-                    new_str += 'ê';
-                    next_token();
-                }
+            	for (var i = 0; i < tokens.length; i++) {
+            		if (get_double_token() == tokens[i][0]) {
+            			new_str += tokens[i][1];
+                    	next_token();
+                    	break;
+            		}
+            	}                
             } else {
                 new_str += get_token();
             }
