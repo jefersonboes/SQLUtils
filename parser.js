@@ -169,7 +169,6 @@ function Parser(text) {
 					sql += "\n";
 
 					state = 0;
-					next_token();
 					break;
 			}
 			
